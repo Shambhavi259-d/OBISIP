@@ -1,0 +1,417 @@
+
+Shambhavi Dattatray Kulkarni
+Task 2 : 
+EMAIL SPAM DETECTION USING MACHINE LEARNING
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+raw_data = pd.read_csv('spam.csv',encoding=('ISO-8859-1'))
+raw_data
+raw_data = pd.read_csv('spam.csv',encoding=('ISO-8859-1'))
+raw_data
+v1	v2	Unnamed: 2	Unnamed: 3	Unnamed: 4
+0	ham	Go until jurong point, crazy.. Available only ...	NaN	NaN	NaN
+1	ham	Ok lar... Joking wif u oni...	NaN	NaN	NaN
+2	spam	Free entry in 2 a wkly comp to win FA Cup fina...	NaN	NaN	NaN
+3	ham	U dun say so early hor... U c already then say...	NaN	NaN	NaN
+4	ham	Nah I don't think he goes to usf, he lives aro...	NaN	NaN	NaN
+5	spam	FreeMsg Hey there darling it's been 3 week's n...	NaN	NaN	NaN
+6	ham	Even my brother is not like to speak with me. ...	NaN	NaN	NaN
+7	ham	As per your request 'Melle Melle (Oru Minnamin...	NaN	NaN	NaN
+8	spam	WINNER!! As a valued network customer you have...	NaN	NaN	NaN
+9	spam	Had your mobile 11 months or more? U R entitle...	NaN	NaN	NaN
+10	ham	I'm gonna be home soon and i don't want to tal...	NaN	NaN	NaN
+11	spam	SIX chances to win CASH! From 100 to 20,000 po...	NaN	NaN	NaN
+12	spam	URGENT! You have won a 1 week FREE membership ...	NaN	NaN	NaN
+13	ham	I've been searching for the right words to tha...	NaN	NaN	NaN
+14	ham	I HAVE A DATE ON SUNDAY WITH WILL!!	NaN	NaN	NaN
+15	spam	XXXMobileMovieClub: To use your credit, click ...	NaN	NaN	NaN
+16	ham	Oh k...i'm watching here:)	NaN	NaN	NaN
+17	ham	Eh u remember how 2 spell his name... Yes i di...	NaN	NaN	NaN
+18	ham	Fine if thatåÕs the way u feel. ThatåÕs the wa...	NaN	NaN	NaN
+19	spam	England v Macedonia - dont miss the goals/team...	NaN	NaN	NaN
+20	ham	Is that seriously how you spell his name?	NaN	NaN	NaN
+21	ham	IÛ÷m going to try for 2 months ha ha only joking	NaN	NaN	NaN
+22	ham	So Ì_ pay first lar... Then when is da stock c...	NaN	NaN	NaN
+23	ham	Aft i finish my lunch then i go str down lor. ...	NaN	NaN	NaN
+24	ham	Ffffffffff. Alright no way I can meet up with ...	NaN	NaN	NaN
+25	ham	Just forced myself to eat a slice. I'm really ...	NaN	NaN	NaN
+26	ham	Lol your always so convincing.	NaN	NaN	NaN
+27	ham	Did you catch the bus ? Are you frying an egg ...	NaN	NaN	NaN
+28	ham	I'm back &amp; we're packing the car now, I'll...	NaN	NaN	NaN
+29	ham	Ahhh. Work. I vaguely remember that! What does...	NaN	NaN	NaN
+...	...	...	...	...	...
+5542	ham	Armand says get your ass over to epsilon	NaN	NaN	NaN
+5543	ham	U still havent got urself a jacket ah?	NaN	NaN	NaN
+5544	ham	I'm taking derek &amp; taylor to walmart, if I...	NaN	NaN	NaN
+5545	ham	Hi its in durban are you still on this number	NaN	NaN	NaN
+5546	ham	Ic. There are a lotta childporn cars then.	NaN	NaN	NaN
+5547	spam	Had your contract mobile 11 Mnths? Latest Moto...	NaN	NaN	NaN
+5548	ham	No, I was trying it all weekend ;V	NaN	NaN	NaN
+5549	ham	You know, wot people wear. T shirts, jumpers, ...	NaN	NaN	NaN
+5550	ham	Cool, what time you think you can get here?	NaN	NaN	NaN
+5551	ham	Wen did you get so spiritual and deep. That's ...	NaN	NaN	NaN
+5552	ham	Have a safe trip to Nigeria. Wish you happines...	NaN	NaN	NaN
+5553	ham	Hahaha..use your brain dear	NaN	NaN	NaN
+5554	ham	Well keep in mind I've only got enough gas for...	NaN	NaN	NaN
+5555	ham	Yeh. Indians was nice. Tho it did kane me off ...	NaN	NaN	NaN
+5556	ham	Yes i have. So that's why u texted. Pshew...mi...	NaN	NaN	NaN
+5557	ham	No. I meant the calculation is the same. That ...	NaN	NaN	NaN
+5558	ham	Sorry, I'll call later	NaN	NaN	NaN
+5559	ham	if you aren't here in the next &lt;#&gt; hou...	NaN	NaN	NaN
+5560	ham	Anything lor. Juz both of us lor.	NaN	NaN	NaN
+5561	ham	Get me out of this dump heap. My mom decided t...	NaN	NaN	NaN
+5562	ham	Ok lor... Sony ericsson salesman... I ask shuh...	NaN	NaN	NaN
+5563	ham	Ard 6 like dat lor.	NaN	NaN	NaN
+5564	ham	Why don't you wait 'til at least wednesday to ...	NaN	NaN	NaN
+5565	ham	Huh y lei...	NaN	NaN	NaN
+5566	spam	REMINDER FROM O2: To get 2.50 pounds free call...	NaN	NaN	NaN
+5567	spam	This is the 2nd time we have tried 2 contact u...	NaN	NaN	NaN
+5568	ham	Will Ì_ b going to esplanade fr home?	NaN	NaN	NaN
+5569	ham	Pity, * was in mood for that. So...any other s...	NaN	NaN	NaN
+5570	ham	The guy did some bitching but I acted like i'd...	NaN	NaN	NaN
+5571	ham	Rofl. Its true to its name	NaN	NaN	NaN
+5572 rows × 5 columns
+
+raw_data.head()
+v1	v2	Unnamed: 2	Unnamed: 3	Unnamed: 4
+0	ham	Go until jurong point, crazy.. Available only ...	NaN	NaN	NaN
+1	ham	Ok lar... Joking wif u oni...	NaN	NaN	NaN
+2	spam	Free entry in 2 a wkly comp to win FA Cup fina...	NaN	NaN	NaN
+3	ham	U dun say so early hor... U c already then say...	NaN	NaN	NaN
+4	ham	Nah I don't think he goes to usf, he lives aro...	NaN	NaN	NaN
+raw_data.shape
+(5572, 5)
+mail_data = raw_data.where((pd.notnull(raw_data)),'')
+mail_data.head()
+v1	v2	Unnamed: 2	Unnamed: 3	Unnamed: 4
+0	ham	Go until jurong point, crazy.. Available only ...			
+1	ham	Ok lar... Joking wif u oni...			
+2	spam	Free entry in 2 a wkly comp to win FA Cup fina...			
+3	ham	U dun say so early hor... U c already then say...			
+4	ham	Nah I don't think he goes to usf, he lives aro...			
+mail_data.shape
+(5572, 5)
+mail_data.loc[mail_data['v1'] == 'spam','v1',]=0
+mail_data.loc[mail_data['v1'] == 'ham','v1',]=1
+mail_data.head()
+v1	v2	Unnamed: 2	Unnamed: 3	Unnamed: 4
+0	1	Go until jurong point, crazy.. Available only ...			
+1	1	Ok lar... Joking wif u oni...			
+2	0	Free entry in 2 a wkly comp to win FA Cup fina...			
+3	1	U dun say so early hor... U c already then say...			
+4	1	Nah I don't think he goes to usf, he lives aro...			
+x = mail_data['v2']
+y = mail_data['v1']
+x
+print(x)
+0       Go until jurong point, crazy.. Available only ...
+1                           Ok lar... Joking wif u oni...
+2       Free entry in 2 a wkly comp to win FA Cup fina...
+3       U dun say so early hor... U c already then say...
+4       Nah I don't think he goes to usf, he lives aro...
+5       FreeMsg Hey there darling it's been 3 week's n...
+6       Even my brother is not like to speak with me. ...
+7       As per your request 'Melle Melle (Oru Minnamin...
+8       WINNER!! As a valued network customer you have...
+9       Had your mobile 11 months or more? U R entitle...
+10      I'm gonna be home soon and i don't want to tal...
+11      SIX chances to win CASH! From 100 to 20,000 po...
+12      URGENT! You have won a 1 week FREE membership ...
+13      I've been searching for the right words to tha...
+14                    I HAVE A DATE ON SUNDAY WITH WILL!!
+15      XXXMobileMovieClub: To use your credit, click ...
+16                             Oh k...i'm watching here:)
+17      Eh u remember how 2 spell his name... Yes i di...
+18      Fine if thatåÕs the way u feel. ThatåÕs the wa...
+19      England v Macedonia - dont miss the goals/team...
+20              Is that seriously how you spell his name?
+21      IÛ÷m going to try for 2 months ha ha only joking
+22      So Ì_ pay first lar... Then when is da stock c...
+23      Aft i finish my lunch then i go str down lor. ...
+24      Ffffffffff. Alright no way I can meet up with ...
+25      Just forced myself to eat a slice. I'm really ...
+26                         Lol your always so convincing.
+27      Did you catch the bus ? Are you frying an egg ...
+28      I'm back &amp; we're packing the car now, I'll...
+29      Ahhh. Work. I vaguely remember that! What does...
+                              ...                        
+5542             Armand says get your ass over to epsilon
+5543               U still havent got urself a jacket ah?
+5544    I'm taking derek &amp; taylor to walmart, if I...
+5545        Hi its in durban are you still on this number
+5546           Ic. There are a lotta childporn cars then.
+5547    Had your contract mobile 11 Mnths? Latest Moto...
+5548                   No, I was trying it all weekend ;V
+5549    You know, wot people wear. T shirts, jumpers, ...
+5550          Cool, what time you think you can get here?
+5551    Wen did you get so spiritual and deep. That's ...
+5552    Have a safe trip to Nigeria. Wish you happines...
+5553                          Hahaha..use your brain dear
+5554    Well keep in mind I've only got enough gas for...
+5555    Yeh. Indians was nice. Tho it did kane me off ...
+5556    Yes i have. So that's why u texted. Pshew...mi...
+5557    No. I meant the calculation is the same. That ...
+5558                               Sorry, I'll call later
+5559    if you aren't here in the next  &lt;#&gt;  hou...
+5560                    Anything lor. Juz both of us lor.
+5561    Get me out of this dump heap. My mom decided t...
+5562    Ok lor... Sony ericsson salesman... I ask shuh...
+5563                                  Ard 6 like dat lor.
+5564    Why don't you wait 'til at least wednesday to ...
+5565                                         Huh y lei...
+5566    REMINDER FROM O2: To get 2.50 pounds free call...
+5567    This is the 2nd time we have tried 2 contact u...
+5568                Will Ì_ b going to esplanade fr home?
+5569    Pity, * was in mood for that. So...any other s...
+5570    The guy did some bitching but I acted like i'd...
+5571                           Rofl. Its true to its name
+Name: v2, Length: 5572, dtype: object
+y
+print(y)
+0       1
+1       1
+2       0
+3       1
+4       1
+5       0
+6       1
+7       1
+8       0
+9       0
+10      1
+11      0
+12      0
+13      1
+14      1
+15      0
+16      1
+17      1
+18      1
+19      0
+20      1
+21      1
+22      1
+23      1
+24      1
+25      1
+26      1
+27      1
+28      1
+29      1
+       ..
+5542    1
+5543    1
+5544    1
+5545    1
+5546    1
+5547    0
+5548    1
+5549    1
+5550    1
+5551    1
+5552    1
+5553    1
+5554    1
+5555    1
+5556    1
+5557    1
+5558    1
+5559    1
+5560    1
+5561    1
+5562    1
+5563    1
+5564    1
+5565    1
+5566    0
+5567    0
+5568    1
+5569    1
+5570    1
+5571    1
+Name: v1, Length: 5572, dtype: object
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.2, random_state=3)
+print(x.shape)
+print(x_train.shape)
+print(x_test.shape)
+​
+(5572,)
+(4457,)
+(1115,)
+feature_extraction = TfidfVectorizer(min_df = 1, stop_words = 'english', lowercase = True)
+​
+x_train_features = feature_extraction.fit_transform(x_train)
+x_test_features = feature_extraction.transform(x_test)
+​
+y_train = y_train.astype('int')
+y_test = y_test.astype('int')
+​
+print(x_train)
+3075    Mum, hope you are having a great day. Hoping t...
+1787                           Yes:)sura in sun tv.:)lol.
+1614    Me sef dey laugh you. Meanwhile how's my darli...
+4304                Yo come over carlos will be here soon
+3266                    Ok then i come n pick u at engin?
+2413    Lol please do. Actually send a pic of yourself...
+4539    Urgh, coach hot, smells of chip fat! Thanks ag...
+3000    This message is free. Welcome to the new & imp...
+2433    Indians r poor but India is not a poor country...
+2403    Jesus christ bitch I'm trying to give you drug...
+5151    No problem with the renewal. I.ll do it right ...
+4294    HMV BONUS SPECIAL 500 pounds of genuine HMV vo...
+4423           Update your face book status frequently :)
+4235    U can WIN å£100 of Music Gift Vouchers every w...
+2577                Hey whats up? U sleeping all morning?
+1361    Shuhui say change 2 suntec steamboat? U noe wh...
+840     I luv u soo much u donåÕt understand how speci...
+4977    JADE ITS PAUL. Y DIDNåÕT U TXT ME? DO U REMEMB...
+4068    Hope youåÕre not having too much fun without m...
+4814                        ÌÏ no home work to do meh... 
+2503    Fwiw the reason I'm only around when it's time...
+2117    Wish u many many returns of the day.. Happy bi...
+4760    It's Ì© only $140 ard...Ìä rest all ard $180 a...
+1199    NEFT Transaction with reference number  &lt;#&...
+312     He says he'll give me a call when his friend's...
+195                          Gud mrng dear hav a nice day
+3556          I had it already..sabarish asked me to go..
+854     Stop the story. I've told him i've returned it...
+5460    December only! Had your mobile 11mths+? You ar...
+2674            I am 6 ft. We will be a good combination!
+                              ...                        
+4272    Kind of. Just missed train cos of asthma attac...
+5455    Wishing you a beautiful day. Each moment revea...
+3243    Squeeeeeze!! This is christmas hug.. If u lik ...
+2567                         I dont want to hear anything
+4926                               Wanna do some art?! :D
+1642                             Sleeping nt feeling well
+4718    Aiyo... Her lesson so early... I'm still sleep...
+858                               Spoons it is then okay?
+4019                   University of southern california.
+4737    I bought the test yesterday. Its something tha...
+3388                        O. Guess they both got screwd
+2306                           Aight that'll work, thanks
+834                            Surely result will offer:)
+2710    Hope you enjoyed your new content. text stop t...
+1498    Time n Smile r the two crucial things in our l...
+4433    Sounds great! Im going to sleep now. Have a go...
+3610                     No. I.ll meet you in the library
+3576      Yeah confirmed for you staying at  that weekend
+1447    DonÛ÷t give a flying monkeys wot they think a...
+2528                     jay says he'll put in  &lt;#&gt;
+5239          Jay wants to work out first, how's 4 sound?
+1705    Yun ah.now Ì_ wkg where?btw if Ì_ go nus sc. Ì...
+2923    Thts god's gift for birds as humans hav some n...
+2707    Great NEW Offer - DOUBLE Mins & DOUBLE Txt on ...
+3069    I'm now but have to wait till 2 for the bus to...
+789                          Gud mrng dear hav a nice day
+968             Are you willing to go for aptitude class.
+1667    So now my dad is gonna call after he gets out ...
+3321    Ok darlin i supose it was ok i just worry too ...
+1688                     Nan sonathaya soladha. Why boss?
+Name: v2, Length: 4457, dtype: object
+print(x_train_features)
+  (0, 4513)	0.2909649098524696
+  (0, 3380)	0.21807195185332803
+  (0, 3262)	0.25877035357606315
+  (0, 3136)	0.440116181574609
+  (0, 2122)	0.38613577623520473
+  (0, 3386)	0.3219352588930141
+  (0, 6599)	0.20296878731699391
+  (0, 4296)	0.3891385935794867
+  (0, 3979)	0.2410582143632299
+  (0, 741)	0.3219352588930141
+  (1, 7443)	0.35056971070320353
+  (1, 6442)	0.5652509076654626
+  (1, 6417)	0.4769136859540388
+  (1, 6872)	0.4306015894277422
+  (1, 4061)	0.380431198316959
+  (2, 5825)	0.4917598465723273
+  (2, 2226)	0.413484525934624
+  (2, 3917)	0.40088501350982736
+  (2, 2109)	0.42972812260098503
+  (2, 933)	0.4917598465723273
+  (3, 7453)	0.5202633571003087
+  (3, 1842)	0.3708680641487708
+  (3, 1599)	0.5927091854194291
+  (3, 6140)	0.4903863168693604
+  (4, 1842)	0.36051481797205776
+  :	:
+  (4452, 4636)	0.4030918768627523
+  (4453, 1762)	0.45610005640082985
+  (4453, 7273)	0.5787739591782677
+  (4453, 999)	0.6760129013031282
+  (4454, 5370)	0.42618909997886
+  (4454, 7346)	0.31166263834107377
+  (4454, 1049)	0.31932060116006045
+  (4454, 2001)	0.4166919007849217
+  (4454, 3088)	0.34475593009514444
+  (4454, 2086)	0.3809693742808703
+  (4454, 3029)	0.42618909997886
+  (4455, 4773)	0.35860460546223444
+  (4455, 3763)	0.16807158405536876
+  (4455, 4251)	0.30616657078392584
+  (4455, 2108)	0.3136468384526087
+  (4455, 7407)	0.3028481995557642
+  (4455, 7358)	0.2915949626395065
+  (4455, 2764)	0.3226323745940581
+  (4455, 6361)	0.25697343671652706
+  (4455, 6433)	0.38998123077430413
+  (4455, 1148)	0.38998123077430413
+  (4456, 4557)	0.48821933148688146
+  (4456, 1386)	0.4460036316446079
+  (4456, 6133)	0.5304350313291551
+  (4456, 6117)	0.5304350313291551
+model = LogisticRegression()
+​
+model.fit(x_train_features, y_train)
+LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, max_iter=100, multi_class='ovr', n_jobs=1,
+          penalty='l2', random_state=None, solver='liblinear', tol=0.0001,
+          verbose=0, warm_start=False)
+prediction_training_data = model.predict(x_train_features)
+accuracy = accuracy_score(y_train, prediction_training_data)
+
+prediction_training_data = model.predict(x_train_features)
+accuracy = accuracy_score(y_train, prediction_training_data)
+​
+print('Accuracy on training data = ', accuracy)
+print('Accuracy on training data = ', accuracy)
+Accuracy on training data =  0.9665694413282477
+prediction_test_data = model.predict(x_test_features)
+accuracy = accuracy_score(y_test, prediction_test_data)
+est
+print('Accuracy on test data = ', accuracy)
+Accuracy on test data =  0.9632286995515695
+#ham,"Nah I don't think he goes to usf, he lives around here though",,,
+#spam,"FreeMsg Hey there darling it's been 3 week's now and no word back! I'd like some fun you up for it still? Tb ok! XxX std chgs to send
+​
+input_mail = ["Nah I don't think he goes to usf, he lives around here though"]
+​
+# text to features
+input_data_features = feature_extraction.transform(input_mail)
+​
+# prediction
+prediction = model.predict(input_data_features)
+​
+print(prediction)
+​
+if (prediction[0]==1):
+    print('It is a Ham mail !')
+​
+​
+else:
+    print('It is a Spam mail !')
+[1]
+It is a Ham mail !
+​

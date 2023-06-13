@@ -1,0 +1,127 @@
+
+Shambhavi Dattatray Kulkarni
+Task 3 : 
+UNEMPLOYMENT ANALYSIS WITH PYTHON
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+from matplotlib import pyplot as plt
+ds1 = pd.read_csv('Unemployment in India.csv')
+ds1.head()
+Region	Date	Frequency	Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)	Area
+0	Andhra Pradesh	31-05-2019	Monthly	3.65	11999139.0	43.24	Rural
+1	Andhra Pradesh	30-06-2019	Monthly	3.05	11755881.0	42.05	Rural
+2	Andhra Pradesh	31-07-2019	Monthly	3.75	12086707.0	43.50	Rural
+3	Andhra Pradesh	31-08-2019	Monthly	3.32	12285693.0	43.97	Rural
+4	Andhra Pradesh	30-09-2019	Monthly	5.17	12256762.0	44.68	Rural
+ds1.tail()
+Region	Date	Frequency	Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)	Area
+763	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+764	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+765	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+766	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+767	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+ds1.describe()
+Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)
+count	740.000000	7.400000e+02	740.000000
+mean	11.787946	7.204460e+06	42.630122
+std	10.721298	8.087988e+06	8.111094
+min	0.000000	4.942000e+04	13.330000
+25%	4.657500	1.190404e+06	38.062500
+50%	8.350000	4.744178e+06	41.160000
+75%	15.887500	1.127549e+07	45.505000
+max	76.740000	4.577751e+07	72.570000
+shape
+ds1.shape
+(768, 7)
+info
+ds1.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 768 entries, 0 to 767
+Data columns (total 7 columns):
+Region                                      740 non-null object
+ Date                                       740 non-null object
+ Frequency                                  740 non-null object
+ Estimated Unemployment Rate (%)            740 non-null float64
+ Estimated Employed                         740 non-null float64
+ Estimated Labour Participation Rate (%)    740 non-null float64
+Area                                        740 non-null object
+dtypes: float64(3), object(4)
+memory usage: 42.1+ KB
+ds1.isnull().sum()
+Region                                      28
+ Date                                       28
+ Frequency                                  28
+ Estimated Unemployment Rate (%)            28
+ Estimated Employed                         28
+ Estimated Labour Participation Rate (%)    28
+Area                                        28
+dtype: int64
+plt.style.use('seaborn-whitegrid')
+plt.figure(figsize=(12,10))
+sns.heatmap(ds1.corr())
+plt.show
+​
+<function matplotlib.pyplot.show(*args, **kw)>
+
+ds2 = pd.read_csv('Unemployment_Rate_upto_11_2020.csv')
+ds2.head()
+Region	Date	Frequency	Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)	Region.1	longitude	latitude
+0	Andhra Pradesh	31-01-2020	M	5.48	16635535	41.02	South	15.9129	79.74
+1	Andhra Pradesh	29-02-2020	M	5.83	16545652	40.90	South	15.9129	79.74
+2	Andhra Pradesh	31-03-2020	M	5.79	15881197	39.18	South	15.9129	79.74
+3	Andhra Pradesh	30-04-2020	M	20.51	11336911	33.10	South	15.9129	79.74
+4	Andhra Pradesh	31-05-2020	M	17.43	12988845	36.46	South	15.9129	79.74
+ds2.tail()
+Region	Date	Frequency	Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)	Region.1	longitude	latitude
+262	West Bengal	30-06-2020	M	7.29	30726310	40.39	East	22.9868	87.855
+263	West Bengal	31-07-2020	M	6.83	35372506	46.17	East	22.9868	87.855
+264	West Bengal	31-08-2020	M	14.87	33298644	47.48	East	22.9868	87.855
+265	West Bengal	30-09-2020	M	9.35	35707239	47.73	East	22.9868	87.855
+266	West Bengal	31-10-2020	M	9.98	33962549	45.63	East	22.9868	87.855
+ds2.describe()
+Estimated Unemployment Rate (%)	Estimated Employed	Estimated Labour Participation Rate (%)	longitude	latitude
+count	267.000000	2.670000e+02	267.000000	267.000000	267.000000
+mean	12.236929	1.396211e+07	41.681573	22.826048	80.532425
+std	10.803283	1.336632e+07	7.845419	6.270731	5.831738
+min	0.500000	1.175420e+05	16.770000	10.850500	71.192400
+25%	4.845000	2.838930e+06	37.265000	18.112400	76.085600
+50%	9.650000	9.732417e+06	40.390000	23.610200	79.019300
+75%	16.755000	2.187869e+07	44.055000	27.278400	85.279900
+max	75.850000	5.943376e+07	69.690000	33.778200	92.937600
+ds2.shape
+(267, 9)
+ds2.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 267 entries, 0 to 266
+Data columns (total 9 columns):
+Region                                      267 non-null object
+ Date                                       267 non-null object
+ Frequency                                  267 non-null object
+ Estimated Unemployment Rate (%)            267 non-null float64
+ Estimated Employed                         267 non-null int64
+ Estimated Labour Participation Rate (%)    267 non-null float64
+Region.1                                    267 non-null object
+longitude                                   267 non-null float64
+latitude                                    267 non-null float64
+dtypes: float64(4), int64(1), object(4)
+memory usage: 18.9+ KB
+ds2.isnull().sum()
+Region                                      0
+ Date                                       0
+ Frequency                                  0
+ Estimated Unemployment Rate (%)            0
+ Estimated Employed                         0
+ Estimated Labour Participation Rate (%)    0
+Region.1                                    0
+longitude                                   0
+latitude                                    0
+dtype: int64
+plt.style.use('seaborn-whitegrid')
+plt.figure(figsize=(12,10))
+sns.heatmap(ds1.corr())
+plt.show
+<function matplotlib.pyplot.show(*args, **kw)>
+
+​
